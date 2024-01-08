@@ -1,0 +1,8 @@
+.vscode/
+data/
+extra_geophysics/
+keep/
+logs/
+save_checkpoint/
+save_trained_model/
+subprograms/
