@@ -277,3 +277,20 @@ def generate_dataset_manifest(data_dir, tabular_dataset_folder, output_filename)
 	df = pd.DataFrame(tabular_data, columns=['image_path', 'label', 'label2id'])
 	df.to_csv(output_file, index=False)
 	print('Saved dataset manifest to:', output_file)
+
+def compute_mse(m, b, x, y):
+    return np.mean((y - (m * x + b))**2)
+
+def compute_gradients(m, b, x, y):
+    N = len(x)
+    dm = -2/N * np.sum(x * (y - (m * x + b)))
+    db = -2/N * np.sum(y - (m * x + b))
+    return dm, db
+
+def basic_gradient_descent(x, y_pred, y, i, m, b, current_mse):
+    plt.plot(x, y_pred, color='red')
+    plt.scatter(x, y, marker='x')
+    plt.title(f"Iteration {i+1}: m = {m:.4f}, b = {b:.4f} | MSE: {current_mse:.4f}")
+    plt.xlabel("Data X")
+    plt.ylabel("Data Y")
+    plt.show()

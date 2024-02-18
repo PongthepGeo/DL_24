@@ -10,8 +10,8 @@ import os
 tabular_file = 'tabular_dataset/manifest_rocks.csv'
 train_ratio = 0.70; val_size = 0.2; test_size = 0.1
 batch_size = 128
-num_epochs = 2
-learning_rate = 1e-2
+num_epochs = 1
+learning_rate = 1e-4
 train_batch_size = batch_size
 eval_batch_size = batch_size
 save_steps = 50
