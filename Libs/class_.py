@@ -4,10 +4,24 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset
 import os
-from PIL import Image
-import numpy as np
 from tqdm import tqdm
 import time
+from PIL import Image, ImageOps
+#-----------------------------------------------------------------------------------------#
+import matplotlib
+params = {
+	'savefig.dpi': 300,  
+	'figure.dpi' : 300,
+	'axes.labelsize':12,  
+	'axes.titlesize':12,
+	'axes.titleweight': 'bold',
+	'legend.fontsize': 10,
+	'xtick.labelsize':10,
+	'ytick.labelsize':10,
+	'font.family': 'serif',
+	'font.serif': 'Times New Roman'
+}
+matplotlib.rcParams.update(params)
 #-----------------------------------------------------------------------------------------#
 
 class SimplePerceptron(nn.Module):
@@ -71,6 +85,25 @@ class Image2Torch(Dataset):
         label = self.class_to_idx[label]
         if self.transform is not None:
             image = self.transform(image)
+        return image, label
+
+#-----------------------------------------------------------------------------------------#
+
+class Image2Torch_02(Dataset):
+    def __init__(self, image_paths, class_to_idx, transform):
+        self.image_paths = image_paths
+        self.class_to_idx = class_to_idx
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.image_paths)
+
+    def __getitem__(self, idx):
+        image_filepath = self.image_paths[idx]
+        image = Image.open(image_filepath).convert('RGB')
+        image = self.transform(image)
+        label_name = os.path.basename(image_filepath).split('_')[0]  # Extract class name from filename
+        label = self.class_to_idx[label_name]  # Convert class name to label
         return image, label
 
 #-----------------------------------------------------------------------------------------#
@@ -223,5 +256,41 @@ class AlexNet_224(nn.Module):
         x = self.classifier(x)
         # Return both the final output and the last conv layer's output
         return x, conv_output
+
+#-----------------------------------------------------------------------------------------#
+
+class SplitDataset:
+    def __init__(self, target_size=(224, 224)):
+        self.target_size = target_size
+
+    def pad_to_center(self, img):
+        old_size = img.size
+        delta_w = max(self.target_size[0] - old_size[0], 0)
+        delta_h = max(self.target_size[1] - old_size[1], 0)
+        padding = (delta_w // 2, delta_h // 2, delta_w - (delta_w // 2), delta_h - (delta_h // 2))
+        return ImageOps.expand(img, padding)
+
+    def split_image(self, img, window_size=(224, 224), step_size=(50, 50)):
+        w, h = img.size
+        grid = []
+        for i in range(0, w - window_size[0] + 1, step_size[0]):
+            for j in range(0, h - window_size[1] + 1, step_size[1]):
+                box = (i, j, i + window_size[0], j + window_size[1])
+                grid.append(img.crop(box))
+        return grid
+
+    def image_split_stride(self, img, base_filename, save_path, sliding_window):
+        img_padded = self.pad_to_center(img)
+        tiles = self.split_image(img_padded, window_size=self.target_size, step_size=(sliding_window, sliding_window))
+        for i, tile in enumerate(tiles):
+            tile_number = f"split_{str(i + 1).zfill(3)}"
+            new_filename = f"{base_filename}_{tile_number}.png"
+            tile.save(os.path.join(save_path, new_filename))
+        return new_filename
+
+    def image_test(self, img, base_filename, save_path):
+        new_filename = f"{base_filename}.png"
+        img.save(os.path.join(save_path, new_filename))
+        return new_filename
 
 #-----------------------------------------------------------------------------------------#

@@ -8,7 +8,6 @@ from PIL import Image
 import numpy as np
 import torch
 from torchvision import transforms
-import matplotlib.pyplot as plt
 #-----------------------------------------------------------------------------------------#
 
 image_with_meta_data = Image.open('data/gabbro.jpg')
@@ -29,7 +28,7 @@ resize_transform = transforms.Resize((32, 32), antialias=True)
 resized_tensor = resize_transform(torch_tensor)
 print("Resized tensor shape:", resized_tensor.shape)
 # NOTE QC plot
-# U.plot_torch_image(resized_tensor)
+U.plot_torch_image(resized_tensor)
 
 #-----------------------------------------------------------------------------------------#
 

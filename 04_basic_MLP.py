@@ -7,7 +7,6 @@ import utilities as U
 from PIL import Image
 import numpy as np
 from torchvision import transforms
-import matplotlib.pyplot as plt
 import torch
 #-----------------------------------------------------------------------------------------#
 
@@ -26,12 +25,12 @@ image = Image.open(image_file)
 image2numpy_array = np.array(image)
 image_array2torch_tensor = torch.from_numpy(image2numpy_array).float()
 torch_tensor = image_array2torch_tensor.permute(2, 0, 1)
-# print("Tensor shape (C, H, W):", torch_tensor.shape)
+print("Tensor shape (C, H, W):", torch_tensor.shape)
 resize_transform = transforms.Resize((model_size, model_size), antialias=True)
 resized_tensor = resize_transform(torch_tensor)
 print("Resized tensor shape:", resized_tensor.shape)
 # NOTE QC image
-# U.plot_torch_image(resized_tensor)
+U.plot_torch_image(resized_tensor)
 
 #-----------------------------------------------------------------------------------------#
 

@@ -7,7 +7,6 @@ import utilities as U
 from PIL import Image
 import numpy as np
 from torchvision import transforms
-import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim

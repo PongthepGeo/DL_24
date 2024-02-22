@@ -77,12 +77,12 @@ transform_test = transforms.Compose([
 train_dataset = C.Image2Torch(train_list, class_to_idx, transform_train)
 val_dataset = C.Image2Torch(val_list, class_to_idx, transform_val)
 test_dataset = C.Image2Torch(test_list, class_to_idx, transform_test)
-train_loader = DataLoader(train_dataset, batch_size=batch_size,
-               shuffle=True, drop_last=True, num_workers=num_workers)
-val_loader = DataLoader(val_dataset, batch_size=batch_size,
-             shuffle=False, drop_last=False, num_workers=num_workers)
-test_loader = DataLoader(test_dataset, batch_size=batch_size,
-              shuffle=False, drop_last=False, num_workers=num_workers)
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True,
+                          drop_last=True, num_workers=num_workers)
+val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False,
+                        drop_last=False, num_workers=num_workers)
+test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False,
+                         drop_last=False, num_workers=num_workers)
 
 #-----------------------------------------------------------------------------------------#
 
