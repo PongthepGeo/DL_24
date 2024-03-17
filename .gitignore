@@ -6,3 +6,4 @@ logs/
 save_checkpoint/
 save_trained_model/
 subprograms/
+AUM_crop_datasets/
