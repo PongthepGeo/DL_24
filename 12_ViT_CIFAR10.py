@@ -9,12 +9,13 @@ import os
 
 tabular_file = 'tabular_dataset/manifest.csv'
 train_ratio = 0.70; val_size = 0.25; test_size = 0.05
-batch_size = 128
+batch_size = 64
 num_epochs = 1
 learning_rate = 1e-1
 train_batch_size = batch_size
 eval_batch_size = batch_size
 save_checkpoint = 'save_checkpoint'
+save_trained_model = 'save_trained_model'
 save_steps = 50
 eval_steps = 50
 weight_decay = 1e-3
@@ -29,7 +30,7 @@ vit_trainer = CT.ViTTrainer(processor.train_ds, processor.val_ds, processor.test
 							num_epochs, learning_rate, train_batch_size,
 							eval_batch_size, save_checkpoint, save_steps,
 							eval_steps, weight_decay, save_log,
-                            save_confusion_matrix)
+                            save_confusion_matrix, save_trained_model)
 vit_trainer.run_training()
 vit_trainer.predict()
 

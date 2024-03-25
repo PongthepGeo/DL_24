@@ -99,7 +99,7 @@ class ViTTrainer:
 				 train_batch_size, eval_batch_size, save_checkpoint, save_steps, eval_steps, weight_decay,
 				 save_log, save_confusion_matrix, save_trained_model):
 		
-		self.device = 'cuda:1' if torch.cuda.is_available() else 'cpu'
+		self.device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 		print(f'Using device: {self.device}')
 
 		self.train_ds = train_ds
